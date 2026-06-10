@@ -1,0 +1,51 @@
+{
+  "name": "NovaTech Solutions",
+  "tagline": "Định Hình Tương Lai Số Cùng Công Nghệ Tiên Phong",
+  "description": "NovaTech là công ty công nghệ chuyên cung cấp các giải pháp toàn diện về Marketing Technology. Chúng tôi giúp doanh nghiệp thấu hiểu khách hàng và tối ưu hóa hiệu quả kinh doanh thông qua việc áp dụng các công nghệ tiên tiến nhất.",
+  "technologies": [
+    {
+      "id": "big-data",
+      "name": "Big Data",
+      "description": "Phân Tích Dữ Liệu Lớn",
+      "icon": "database"
+    },
+    {
+      "id": "ai",
+      "name": "AI",
+      "description": "Trí Tuệ Nhân Tạo",
+      "icon": "brain-circuit"
+    },
+    {
+      "id": "ml",
+      "name": "Machine Learning",
+      "description": "Học Máy",
+      "icon": "bot"
+    },
+    {
+      "id": "nlp",
+      "name": "NLP",
+      "description": "Xử Lý Ngôn Ngữ Tự Nhiên",
+      "icon": "message-square"
+    }
+  ],
+  "contact": {
+    "address": "Tầng 8, Tòa nhà Innovation, Khu Công Nghệ Cao, TP.HCM",
+    "phone": "(+84) 28 3456 7890",
+    "email": "contact@novatech.demo",
+    "website": "novatech.demo"
+  },
+  "socials": [
+    {
+      "platform": "facebook",
+      "url": "#"
+    },
+    {
+      "platform": "linkedin",
+      "url": "#"
+    },
+    {
+      "platform": "twitter",
+      "url": "#"
+    }
+  ]
+}

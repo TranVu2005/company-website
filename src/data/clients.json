@@ -1,0 +1,8 @@
+[
+  { "id": "c1", "name": "Viettel", "logo": "https://upload.wikimedia.org/wikipedia/commons/f/fe/Viettel_logo_2021.svg" },
+  { "id": "c2", "name": "MobiFone", "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a0/MobiFone_logo.svg" },
+  { "id": "c3", "name": "Vinamilk", "logo": "https://upload.wikimedia.org/wikipedia/commons/7/70/Vinamilk_new_logo.svg" },
+  { "id": "c4", "name": "Techcombank", "logo": "https://upload.wikimedia.org/wikipedia/vi/4/43/Logo_c%E1%BB%A7a_Techcombank_t%E1%BB%AB_2004.svg" },
+  { "id": "c5", "name": "Vingroup", "logo": "https://upload.wikimedia.org/wikipedia/vi/9/98/Vingroup_logo.svg" },
+  { "id": "c6", "name": "FPT", "logo": "https://upload.wikimedia.org/wikipedia/commons/1/11/FPT_logo_2010.svg" }
+]

@@ -1,0 +1,26 @@
+.clients-section {
+  background-color: var(--bg-white);
+  padding: 4rem 0;
+  border-top: 1px solid rgba(0,0,0,0.05);
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+.clients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.client-logo {
+  height: 40px;
+  max-width: 150px;
+  object-fit: contain;
+  transition: var(--transition-normal);
+}
+
+.client-logo:hover {
+  transform: scale(1.05);
+}

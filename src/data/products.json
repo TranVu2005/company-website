@@ -1,0 +1,41 @@
+[
+  {
+    "id": "p1",
+    "name": "NovaInsights",
+    "tagline": "Hệ thống phân tích và thấu hiểu khách hàng",
+    "features": [
+      "Tự động thu thập và chuẩn hóa dữ liệu từ nhiều nguồn",
+      "Xây dựng chân dung khách hàng 360 độ (Customer 360)",
+      "Dự đoán hành vi mua hàng bằng Machine Learning",
+      "Phân nhóm khách hàng thông minh (Smart Segmentation)"
+    ],
+    "image": "https://placehold.co/600x400/100f1e/8a2e24?text=NovaInsights",
+    "details": "Sản phẩm NovaInsights được thiết kế với kiến trúc hiện đại, có khả năng mở rộng cao và đáp ứng nhu cầu khắt khe của doanh nghiệp lớn. Tích hợp các công nghệ tiên tiến nhất như AI, Machine Learning để tự động hóa và nâng cao năng suất."
+  },
+  {
+    "id": "p2",
+    "name": "NovaSocial",
+    "tagline": "Nền tảng lắng nghe mạng xã hội",
+    "features": [
+      "Thu thập dữ liệu 24/7 từ MXH, báo chí, diễn đàn",
+      "Phân tích sắc thái (Sentiment Analysis) tự động bằng NLP",
+      "Cảnh báo khủng hoảng truyền thông theo thời gian thực",
+      "Báo cáo hiệu suất chiến dịch tự động"
+    ],
+    "image": "https://placehold.co/600x400/100f1e/184e77?text=NovaSocial",
+    "details": "Sản phẩm NovaSocial được thiết kế với kiến trúc hiện đại, có khả năng mở rộng cao và đáp ứng nhu cầu khắt khe của doanh nghiệp lớn. Tích hợp các công nghệ tiên tiến nhất như AI, Machine Learning để tự động hóa và nâng cao năng suất."
+  },
+  {
+    "id": "p3",
+    "name": "NovaCompare",
+    "tagline": "Nền tảng so sánh sản phẩm tài chính",
+    "features": [
+      "Tổng hợp thông tin từ hàng ngàn sản phẩm tín dụng, bảo hiểm",
+      "Thuật toán gợi ý cá nhân hóa cao",
+      "Tối ưu hóa quy trình đăng ký số (eKYC)",
+      "Bảo mật dữ liệu tuyệt đối theo tiêu chuẩn quốc tế"
+    ],
+    "image": "https://placehold.co/600x400/100f1e/3d2b56?text=NovaCompare",
+    "details": "Sản phẩm NovaCompare được thiết kế với kiến trúc hiện đại, có khả năng mở rộng cao và đáp ứng nhu cầu khắt khe của doanh nghiệp lớn. Tích hợp các công nghệ tiên tiến nhất như AI, Machine Learning để tự động hóa và nâng cao năng suất."
+  }
+]

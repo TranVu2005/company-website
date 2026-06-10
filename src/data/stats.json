@@ -1,0 +1,6 @@
+[
+  { "id": "st1", "value": 5, "label": "Năm kinh nghiệm", "suffix": "+" },
+  { "id": "st2", "value": 500, "label": "Khách hàng", "suffix": "+" },
+  { "id": "st3", "value": 1200, "label": "Dự án hoàn thành", "suffix": "" },
+  { "id": "st4", "value": 50, "label": "Chuyên gia", "suffix": "+" }
+]

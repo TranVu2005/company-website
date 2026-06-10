@@ -1,0 +1,56 @@
+.detail-page {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+.detail-hero {
+  background-color: var(--bg-card);
+  padding: 10rem 0 5rem;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.detail-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+  background: rgba(0, 240, 255, 0.1);
+  border-radius: 50%;
+  color: var(--accent-primary);
+  margin-bottom: 2rem;
+}
+
+.detail-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-bottom: 1rem;
+}
+
+.detail-subtitle {
+  font-size: 1.25rem;
+  color: var(--text-body);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detail-content {
+  padding: 5rem 0;
+}
+
+.detail-features.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  padding: 2.5rem;
+  border-radius: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.feature-list li {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.news-article-content p {
+  margin-bottom: 1.5rem;
+}

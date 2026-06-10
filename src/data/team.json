@@ -1,0 +1,30 @@
+[
+  {
+    "id": "t1",
+    "name": "Trần Anh Tuấn",
+    "role": "CEO & Founder",
+    "bio": "15+ năm kinh nghiệm quản lý các tập đoàn công nghệ lớn.",
+    "avatar": "https://placehold.co/300x300/e0e0e0/333333?text=AT"
+  },
+  {
+    "id": "t2",
+    "name": "Lê Mai Thy",
+    "role": "CTO",
+    "bio": "Chuyên gia AI & Big Data, kiến trúc sư trưởng các hệ thống cốt lõi.",
+    "avatar": "https://placehold.co/300x300/e0e0e0/333333?text=MT"
+  },
+  {
+    "id": "t3",
+    "name": "Nguyễn Văn Nam",
+    "role": "Head of Data Science",
+    "bio": "Tiến sĩ Data Science, dẫn dắt đội ngũ nghiên cứu thuật toán NLP.",
+    "avatar": "https://placehold.co/300x300/e0e0e0/333333?text=VN"
+  },
+  {
+    "id": "t4",
+    "name": "Phạm Lan Ngọc",
+    "role": "Marketing Director",
+    "bio": "Chiến lược gia xuất sắc trong việc phát triển MarTech ecosystem.",
+    "avatar": "https://placehold.co/300x300/e0e0e0/333333?text=LN"
+  }
+]

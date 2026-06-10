@@ -1,0 +1,80 @@
+[
+  {
+    "id": "s1",
+    "title": "Truyền thông trúng đích",
+    "description": "Giải pháp truyền thông trên quy mô dữ liệu lớn, tiếp cận chính xác đối tượng mục tiêu dựa trên phân tích hành vi và nhân khẩu học.",
+    "icon": "pie-chart",
+    "details": "Chi tiết dịch vụ Truyền thông trúng đích: Chúng tôi cung cấp giải pháp toàn diện và chuyên sâu, giúp doanh nghiệp tối ưu hóa quy trình và tăng trưởng bền vững. Với đội ngũ chuyên gia giàu kinh nghiệm, NovaTech cam kết mang lại hiệu quả cao nhất cho khách hàng.",
+    "features": [
+      "Khảo sát và tư vấn chuyên sâu",
+      "Triển khai nhanh chóng, chuyên nghiệp",
+      "Báo cáo và phân tích kết quả định kỳ",
+      "Hỗ trợ kỹ thuật 24/7"
+    ]
+  },
+  {
+    "id": "s2",
+    "title": "Báo cáo thị trường Big Data",
+    "description": "Cập nhật xu hướng và cơ hội kinh doanh mới nhất trên nền tảng dữ liệu lớn đa nguồn, giúp đưa ra quyết định chiến lược.",
+    "icon": "line-chart",
+    "details": "Chi tiết dịch vụ Báo cáo thị trường Big Data: Chúng tôi cung cấp giải pháp toàn diện và chuyên sâu, giúp doanh nghiệp tối ưu hóa quy trình và tăng trưởng bền vững. Với đội ngũ chuyên gia giàu kinh nghiệm, NovaTech cam kết mang lại hiệu quả cao nhất cho khách hàng.",
+    "features": [
+      "Khảo sát và tư vấn chuyên sâu",
+      "Triển khai nhanh chóng, chuyên nghiệp",
+      "Báo cáo và phân tích kết quả định kỳ",
+      "Hỗ trợ kỹ thuật 24/7"
+    ]
+  },
+  {
+    "id": "s3",
+    "title": "Agency Quảng cáo",
+    "description": "Tối ưu hóa đa kênh phân phối, đẩy mạnh khả năng tiếp cận khách hàng tiềm năng và tăng trưởng lợi nhuận vượt bậc.",
+    "icon": "zap",
+    "details": "Chi tiết dịch vụ Agency Quảng cáo: Chúng tôi cung cấp giải pháp toàn diện và chuyên sâu, giúp doanh nghiệp tối ưu hóa quy trình và tăng trưởng bền vững. Với đội ngũ chuyên gia giàu kinh nghiệm, NovaTech cam kết mang lại hiệu quả cao nhất cho khách hàng.",
+    "features": [
+      "Khảo sát và tư vấn chuyên sâu",
+      "Triển khai nhanh chóng, chuyên nghiệp",
+      "Báo cáo và phân tích kết quả định kỳ",
+      "Hỗ trợ kỹ thuật 24/7"
+    ]
+  },
+  {
+    "id": "s4",
+    "title": "Quản trị hình ảnh & CSKH",
+    "description": "Phân tích dữ liệu phản hồi từ đa nền tảng, phát hiện sớm rủi ro truyền thông và nâng cao chất lượng dịch vụ khách hàng.",
+    "icon": "shield-check",
+    "details": "Chi tiết dịch vụ Quản trị hình ảnh & CSKH: Chúng tôi cung cấp giải pháp toàn diện và chuyên sâu, giúp doanh nghiệp tối ưu hóa quy trình và tăng trưởng bền vững. Với đội ngũ chuyên gia giàu kinh nghiệm, NovaTech cam kết mang lại hiệu quả cao nhất cho khách hàng.",
+    "features": [
+      "Khảo sát và tư vấn chuyên sâu",
+      "Triển khai nhanh chóng, chuyên nghiệp",
+      "Báo cáo và phân tích kết quả định kỳ",
+      "Hỗ trợ kỹ thuật 24/7"
+    ]
+  },
+  {
+    "id": "s5",
+    "title": "Tư vấn chiến lược Marketing",
+    "description": "Đánh giá toàn diện hiện trạng doanh nghiệp, xây dựng kế hoạch Marketing chuyên biệt nhằm chinh phục thị trường mục tiêu.",
+    "icon": "compass",
+    "details": "Chi tiết dịch vụ Tư vấn chiến lược Marketing: Chúng tôi cung cấp giải pháp toàn diện và chuyên sâu, giúp doanh nghiệp tối ưu hóa quy trình và tăng trưởng bền vững. Với đội ngũ chuyên gia giàu kinh nghiệm, NovaTech cam kết mang lại hiệu quả cao nhất cho khách hàng.",
+    "features": [
+      "Khảo sát và tư vấn chuyên sâu",
+      "Triển khai nhanh chóng, chuyên nghiệp",
+      "Báo cáo và phân tích kết quả định kỳ",
+      "Hỗ trợ kỹ thuật 24/7"
+    ]
+  },
+  {
+    "id": "s6",
+    "title": "Quảng cáo chuyển đổi",
+    "description": "Chiến lược dẫn dắt hành trình khách hàng xuyên suốt, từ nhận thức đến hành động, tích hợp các chiến dịch up-sale & cross-sale.",
+    "icon": "target",
+    "details": "Chi tiết dịch vụ Quảng cáo chuyển đổi: Chúng tôi cung cấp giải pháp toàn diện và chuyên sâu, giúp doanh nghiệp tối ưu hóa quy trình và tăng trưởng bền vững. Với đội ngũ chuyên gia giàu kinh nghiệm, NovaTech cam kết mang lại hiệu quả cao nhất cho khách hàng.",
+    "features": [
+      "Khảo sát và tư vấn chuyên sâu",
+      "Triển khai nhanh chóng, chuyên nghiệp",
+      "Báo cáo và phân tích kết quả định kỳ",
+      "Hỗ trợ kỹ thuật 24/7"
+    ]
+  }
+]

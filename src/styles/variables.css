@@ -1,0 +1,51 @@
+:root {
+  /* Colors */
+  --bg-dark: hsl(220, 25%, 10%);           /* Hero & Footer */
+  --bg-dark-overlay: rgba(10, 15, 30, 0.85);
+  --bg-white: hsl(0, 0%, 100%);            /* Content sections */
+  --bg-light: hsl(220, 20%, 97%);          /* Alternating sections */
+  --bg-card: hsl(0, 0%, 100%);
+
+  /* Accent (Red-Orange gradient) */
+  --accent-primary: hsl(8, 85%, 55%);      
+  --accent-hover: hsl(8, 90%, 48%);
+  --accent-secondary: hsl(25, 90%, 55%);
+  --accent-gradient: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  --accent-light: hsla(8, 85%, 55%, 0.1);
+
+  /* Decorative */
+  --blue-accent: hsl(210, 100%, 55%);
+  --gradient-blob-1: hsl(210, 80%, 90%);
+  --gradient-blob-2: hsl(330, 70%, 90%);
+
+  /* Text */
+  --text-dark: hsl(220, 20%, 15%);
+  --text-body: hsl(220, 10%, 40%);
+  --text-light: hsl(0, 0%, 95%);
+  --text-muted: hsl(0, 0%, 65%);
+
+  /* Typography */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Shadows & Glassmorphism */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.2);
+  --glass-blur: blur(20px);
+  
+  --glass-dark-bg: rgba(10, 15, 30, 0.7);
+  --glass-dark-border: 1px solid rgba(255, 255, 255, 0.1);
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Layout */
+  --container-max-width: 1280px;
+  --section-padding: clamp(4rem, 8vw, 8rem) 0;
+  --section-padding-sm: clamp(3rem, 5vw, 5rem) 0;
+}
