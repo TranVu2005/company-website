@@ -837,10 +837,14 @@ export async function CrmListView({ initPageResult, searchParams }: AdminViewSer
     }),
     // Đọc toàn bộ đơn đã thanh toán 1 lần rồi gộp theo customer trong JS,
     // tránh N+1 query (1 query / khách) khi danh sách khách hàng dài.
+    // depth: 0 để order.customer là id thô (không populate thành object) —
+    // nếu không, String(order.customer) === "[object Object]" và không khớp
+    // được với String(customer.id) khi gộp theo khách.
     req.payload.find({
       collection: "orders",
       where: { paymentStatus: { equals: "paid" } },
       limit: 0,
+      depth: 0,
     }),
   ]);
 
