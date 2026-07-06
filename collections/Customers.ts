@@ -42,8 +42,12 @@ export const Customers: CollectionConfig = {
       ],
       access: {
         // Chỉ tài khoản nội bộ (users) mới ghi được field này. Document-level
-        // access của Customers cho phép khách tự sửa hồ sơ của mình, nên nếu
-        // không chặn riêng ở đây thì một khách có thể tự PATCH segment:"vip".
+        // access của Customers cho phép khách tự sửa hồ sơ của mình VÀ tự
+        // đăng ký (create: () => true), nên phải chặn cả create lẫn update —
+        // thiếu create thì một khách có thể tự đăng ký với segment:"vip"
+        // ngay từ đầu (Payload chỉ áp field-level access khi field.access có
+        // đúng key của operation đang chạy).
+        create: ({ req: { user } }) => user?.collection === "users",
         update: ({ req: { user } }) => user?.collection === "users",
       },
     },
@@ -56,6 +60,7 @@ export const Customers: CollectionConfig = {
         description: "Khi bật, hệ thống không tự tính lại nhóm theo doanh số.",
       },
       access: {
+        create: ({ req: { user } }) => user?.collection === "users",
         update: ({ req: { user } }) => user?.collection === "users",
       },
     },
