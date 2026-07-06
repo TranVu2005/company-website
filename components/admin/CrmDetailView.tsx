@@ -13,7 +13,7 @@ const KIND_LABELS: Record<string, string> = {
   lead: "Lead",
 };
 
-export async function CrmDetailView({ initPageResult, params }: AdminViewServerProps) {
+export async function CrmDetailView({ initPageResult, params, searchParams }: AdminViewServerProps) {
   const { req } = initPageResult;
 
   if (req.user?.collection !== "users") {
@@ -30,11 +30,20 @@ export async function CrmDetailView({ initPageResult, params }: AdminViewServerP
   const customer = await req.payload.findByID({ collection: "customers", id });
   const timeline = await getCustomerTimeline(req.payload, id);
 
+  // Các route /api/crm/* redirect 303 về đây kèm ?crmError=... khi form
+  // submit thất bại (400/500), để admin thấy lý do thay vì trang JSON thô.
+  const errorMessage = typeof searchParams?.crmError === "string" ? searchParams.crmError : undefined;
+
   return (
     <div style={{ padding: 24 }}>
       <p>
         <a href="/admin/crm">← Danh sách khách hàng</a>
       </p>
+      {errorMessage ? (
+        <p style={{ color: "#b91c1c", background: "#fee2e2", padding: "8px 12px", borderRadius: 4 }}>
+          {errorMessage}
+        </p>
+      ) : null}
       <h1>{customer.name}</h1>
       <p>
         {customer.email} · {customer.phone}
