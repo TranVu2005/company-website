@@ -26,6 +26,16 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
+    components: {
+      views: {
+        crmList: {
+          Component: "/components/admin/CrmListView#CrmListView",
+          path: "/crm",
+          exact: true,
+        },
+      },
+      beforeNavLinks: ["/components/admin/CrmNav#CrmNav"],
+    },
   },
   collections: [Users, Customers, Media, Services, Products, News, Team, Clients, Stats, Leads, Orders, CustomerNotes],
   globals: [Company],
