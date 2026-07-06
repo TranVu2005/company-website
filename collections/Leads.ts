@@ -8,7 +8,7 @@ export const Leads: CollectionConfig = {
     defaultColumns: ["name", "email", "phone", "subject", "status", "createdAt"],
   },
   access: {
-    read: ({ req: { user } }) => Boolean(user),
+    read: ({ req: { user } }) => user?.collection === "users",
     create: () => true, // Public form submission
   },
   fields: [
