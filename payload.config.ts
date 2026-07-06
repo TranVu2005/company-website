@@ -33,6 +33,11 @@ export default buildConfig({
           path: "/crm",
           exact: true,
         },
+        crmDetail: {
+          Component: "/components/admin/CrmDetailView#CrmDetailView",
+          path: "/crm/:id",
+          exact: true,
+        },
       },
       beforeNavLinks: ["/components/admin/CrmNav#CrmNav"],
     },
