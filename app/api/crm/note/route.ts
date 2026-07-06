@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { parseActionBody } from "@/lib/parseActionBody";
 
 const VALID_TYPES = ["note", "call", "meeting", "email", "other"];
 
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
       return Response.json({ message: "Không có quyền" }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, isForm } = await parseActionBody(request);
     // Ép về number: collection ID của Postgres adapter là serial (number), nên
     // relationship-field validator của Payload đòi typeof === "number" — chuỗi
     // "18" sẽ trượt validation dù customer tồn tại. Number() nhận cả số JSON lẫn
@@ -32,6 +33,11 @@ export async function POST(request: Request) {
       user,
     });
 
+    // Form HTML thuần (CrmDetailView) điều hướng cả trang tới response của
+    // POST — quay lại trang chi tiết khách thay vì để admin nhìn JSON thô.
+    if (isForm) {
+      return Response.redirect(new URL(`/admin/crm/${customerId}`, request.url), 303);
+    }
     return Response.json({ message: "Đã thêm ghi chú", doc });
   } catch (error: any) {
     console.error("[crm] create note error:", error);

@@ -1,6 +1,7 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 import type { CustomerSegment } from "@/lib/crm";
+import { parseActionBody } from "@/lib/parseActionBody";
 
 const VALID_SEGMENTS: CustomerSegment[] = ["new", "potential", "vip"];
 
@@ -15,11 +16,11 @@ export async function POST(request: Request) {
       return Response.json({ message: "Không có quyền" }, { status: 403 });
     }
 
-    const body = await request.json();
+    const { data: body, isForm } = await parseActionBody(request);
     const customerId = body.customerId != null ? Number(body.customerId) : undefined;
     const segment = body.segment;
 
-    if (!customerId || !VALID_SEGMENTS.includes(segment)) {
+    if (!customerId || !VALID_SEGMENTS.includes(segment as CustomerSegment)) {
       return Response.json({ message: "Thiếu customerId hoặc segment không hợp lệ" }, { status: 400 });
     }
 
@@ -29,6 +30,11 @@ export async function POST(request: Request) {
       data: { segment, segmentOverride: true },
     });
 
+    // Form HTML thuần (CrmDetailView) điều hướng cả trang tới response của
+    // POST — quay lại trang chi tiết khách thay vì để admin nhìn JSON thô.
+    if (isForm) {
+      return Response.redirect(new URL(`/admin/crm/${customerId}`, request.url), 303);
+    }
     return Response.json({ message: "Đã cập nhật nhóm khách hàng", doc });
   } catch (error: any) {
     console.error("[crm] set segment error:", error);
