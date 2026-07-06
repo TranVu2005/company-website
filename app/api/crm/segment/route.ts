@@ -16,7 +16,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const customerId = body.customerId ? String(body.customerId) : undefined;
+    const customerId = body.customerId != null ? Number(body.customerId) : undefined;
     const segment = body.segment;
 
     if (!customerId || !VALID_SEGMENTS.includes(segment)) {

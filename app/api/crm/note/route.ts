@@ -14,7 +14,11 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const customerId = body.customerId ? String(body.customerId) : undefined;
+    // Ép về number: collection ID của Postgres adapter là serial (number), nên
+    // relationship-field validator của Payload đòi typeof === "number" — chuỗi
+    // "18" sẽ trượt validation dù customer tồn tại. Number() nhận cả số JSON lẫn
+    // chuỗi số; NaN/0 bị chặn bởi guard !customerId phía dưới.
+    const customerId = body.customerId != null ? Number(body.customerId) : undefined;
     const type = VALID_TYPES.includes(body.type) ? body.type : "note";
     const content = typeof body.content === "string" ? body.content.trim() : "";
 

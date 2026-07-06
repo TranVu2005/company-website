@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const customerId = body.customerId ? String(body.customerId) : undefined;
+    const customerId = body.customerId != null ? Number(body.customerId) : undefined;
     if (!customerId) {
       return Response.json({ message: "Thiếu customerId" }, { status: 400 });
     }
