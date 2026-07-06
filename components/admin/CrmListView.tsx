@@ -28,6 +28,7 @@ export async function CrmListView({ initPageResult, searchParams }: AdminViewSer
       collection: "orders",
       where: { paymentStatus: { equals: "paid" } },
       limit: 0,
+      depth: 0,
     }),
   ]);
 
