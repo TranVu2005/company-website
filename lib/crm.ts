@@ -40,3 +40,79 @@ export async function recomputeSegment(payload: Payload, customerId: string | nu
     });
   }
 }
+
+export type TimelineEvent = {
+  kind: "lead" | "order" | "note";
+  date: string;
+  title: string;
+  detail?: string;
+  status?: string;
+  href?: string;
+};
+
+/**
+ * Gộp lead (liên kết mềm theo email) + đơn hàng + ghi chú sales của 1 khách
+ * thành một dòng thời gian, sắp xếp mới nhất trước.
+ */
+export async function getCustomerTimeline(payload: Payload, customerId: string | number): Promise<TimelineEvent[]> {
+  const customer = await payload.findByID({ collection: "customers", id: customerId });
+
+  const [orders, notes, leads] = await Promise.all([
+    payload.find({
+      collection: "orders",
+      where: { customer: { equals: customerId } },
+      limit: 0,
+    }),
+    payload.find({
+      collection: "customer-notes",
+      where: { customer: { equals: customerId } },
+      limit: 0,
+      depth: 1,
+    }),
+    customer?.email
+      ? payload.find({
+          collection: "leads",
+          where: { email: { equals: customer.email } },
+          limit: 0,
+        })
+      : Promise.resolve({ docs: [] as any[] }),
+  ]);
+
+  const events: TimelineEvent[] = [];
+
+  for (const order of orders.docs) {
+    events.push({
+      kind: "order",
+      date: order.createdAt,
+      title: `Đơn ${order.orderNumber} — ${(order.total || 0).toLocaleString("vi-VN")}đ`,
+      status: order.paymentStatus,
+      href: `/admin/collections/orders/${order.id}`,
+    });
+  }
+
+  for (const note of notes.docs) {
+    const author =
+      note.author && typeof note.author === "object"
+        ? note.author.name || note.author.email
+        : "";
+    events.push({
+      kind: "note",
+      date: note.createdAt,
+      title: `Ghi chú (${note.type})${author ? ` — ${author}` : ""}`,
+      detail: note.content,
+    });
+  }
+
+  for (const lead of leads.docs) {
+    events.push({
+      kind: "lead",
+      date: lead.createdAt,
+      title: `Lead: ${lead.subject}`,
+      status: lead.status,
+      href: `/admin/collections/leads/${lead.id}`,
+    });
+  }
+
+  events.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  return events;
+}
