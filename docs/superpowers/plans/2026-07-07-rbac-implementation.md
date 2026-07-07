@@ -21,6 +21,7 @@
 - Admin login for manual verification: `admin@novatech.demo` / `admin123456`.
 - Clean up all test users/customers/products/etc. created during manual verification (delete via REST as the `users` admin) before marking a task done.
 - Dev server: assume `npm run dev` is already running; check with a quick curl to `http://localhost:3000/admin` before starting a new one if unsure.
+- **Never name a route-handler folder (or any path segment in its path) with a leading underscore** (e.g. `app/api/rbac/_debug-hasrole/`) — Next.js App Router treats any underscore-prefixed folder as a "private folder" excluded from routing entirely, at the file-system/build level, independent of Payload's catch-all route. This causes a `404 Route not found` that looks like a Payload routing conflict but isn't one. Confirmed empirically during planning: `app/api/rbac/_debug-hasrole/route.ts` 404'd even after a full dev-server restart; renaming the folder to `app/api/rbac/debug-hasrole/route.ts` (no leading underscore) fixed it immediately with no other change.
 
 ---
 
@@ -61,7 +62,7 @@ components/admin/DashboardNav.tsx   MODIFY  hide unless hasRole(user, ["admin","
 
 **Files:**
 - Create: `lib/rbac.ts`
-- Test: temporary debug route `app/api/rbac/_debug-hasrole/route.ts` (created and removed within this task)
+- Test: temporary debug route `app/api/rbac/debug-hasrole/route.ts` (created and removed within this task)
 
 **Interfaces:**
 - Produces: `export type Role = "admin" | "editor" | "sales" | "accountant"` and `export function hasRole(user, allowed: Role[]): boolean` — every later task imports this by these exact names. `user` accepts anything with optional `collection`/`roles` fields (matches Payload's loosely-typed `req.user` in this repo, which has no generated `payload-types.ts`).
@@ -100,7 +101,7 @@ Expected: no errors.
 
 - [ ] **Step 3: Create a temporary debug route to exercise `hasRole` with synthetic inputs**
 
-`hasRole` is a pure function with no DB/auth dependency — verify it directly with hardcoded fake user objects, no real login needed. Create `app/api/rbac/_debug-hasrole/route.ts`:
+`hasRole` is a pure function with no DB/auth dependency — verify it directly with hardcoded fake user objects, no real login needed. Create `app/api/rbac/debug-hasrole/route.ts`:
 
 ```ts
 import { hasRole } from "@/lib/rbac";
@@ -132,14 +133,14 @@ export async function GET() {
 - [ ] **Step 4: Restart the dev server and run the check**
 
 ```bash
-curl -s http://localhost:3000/api/rbac/_debug-hasrole
+curl -s http://localhost:3000/api/rbac/debug-hasrole
 ```
 
 Expected: JSON with `"allPass": true` and every entry in `results` showing `"pass": true`.
 
 - [ ] **Step 5: Remove the debug route**
 
-Delete `app/api/rbac/_debug-hasrole/route.ts` entirely (it was only for manually exercising `hasRole` before real access-control call sites exist, starting Task 2).
+Delete `app/api/rbac/debug-hasrole/route.ts` entirely (it was only for manually exercising `hasRole` before real access-control call sites exist, starting Task 2).
 
 - [ ] **Step 6: Typecheck again (debug route removed)**
 
@@ -1271,5 +1272,5 @@ git commit -m "fix(rbac): restrict Dashboard view and nav to admin+sales+account
 ## Self-Review Notes
 
 - **Spec coverage:** every row of the spec's permission matrix maps to a task — `hasRole()` (Task 1), Users self-escalation fix (Task 2), content collections (Task 3), Leads/CustomerNotes (Task 4), Customers/Orders (Task 5), CRM (Task 6), Dashboard (Task 7). The spec's "Ngoài phạm vi" items (permission-management UI, scoped-by-owner data access, audit log, Users self-service editing) are deliberately not tasked.
-- **Placeholder scan:** every step has literal, complete code; the one temporary artifact (`app/api/rbac/_debug-hasrole/route.ts` in Task 1) is created and explicitly deleted within the same task.
+- **Placeholder scan:** every step has literal, complete code; the one temporary artifact (`app/api/rbac/debug-hasrole/route.ts` in Task 1) is created and explicitly deleted within the same task.
 - **Type consistency:** `Role` and `hasRole(user, allowed: Role[]): boolean` are defined once in `lib/rbac.ts` (Task 1) and only ever imported, never redefined, in Tasks 2–7. The `Customers.ts`/`Orders.ts` read-access restructuring in Task 5 (returning `hasRole(...)`'s boolean directly instead of a hardcoded `true`) was caught and corrected during this self-review pass — the original spec's inline code sketch for that section would have produced a subtle wrong-record-match bug for denied internal roles.
