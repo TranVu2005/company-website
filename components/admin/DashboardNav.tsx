@@ -1,7 +1,10 @@
-// Link "Dashboard" trong sidebar /admin. Không tự kiểm tra quyền ở đây —
-// toàn bộ khung /admin (admin.user = Users.slug trong payload.config.ts) đã
-// chỉ cho tài khoản "users" đăng nhập được vào, giống CrmNav.tsx.
-export function DashboardNav() {
+import type { ServerProps } from "payload";
+import { hasRole } from "@/lib/rbac";
+
+// Link "Dashboard" trong sidebar /admin. Chỉ hiện với role admin/sales/kế
+// toán — chỉ là UX, rào chắn thật nằm ở guard trong DashboardView.
+export function DashboardNav({ user }: ServerProps) {
+  if (!hasRole(user, ["admin", "sales", "accountant"])) return null;
   return (
     <a
       href="/admin/dashboard"

@@ -1,5 +1,6 @@
 import type { AdminViewServerProps } from "payload";
 import { getDashboardMetrics, type DashboardMetrics, type DashboardRange } from "@/lib/dashboard";
+import { hasRole } from "@/lib/rbac";
 
 const RANGE_LABELS: Record<DashboardRange, string> = {
   today: "Hôm nay",
@@ -43,8 +44,8 @@ function TrendChart({ dailyTrend }: { dailyTrend: DashboardMetrics["dailyTrend"]
 export async function DashboardView({ initPageResult, searchParams }: AdminViewServerProps) {
   const { req } = initPageResult;
 
-  // Phòng thủ thêm dù khung /admin đã chặn non-"users" truy cập.
-  if (req.user?.collection !== "users") {
+  // Chỉ role admin/sales/kế toán được xem Dashboard.
+  if (!hasRole(req.user, ["admin", "sales", "accountant"])) {
     return <div style={{ padding: 24 }}>Không có quyền truy cập.</div>;
   }
 
