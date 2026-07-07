@@ -1,5 +1,6 @@
 import type { CollectionConfig } from "payload";
 import { recomputeSegment } from "../lib/crm";
+import { hasRole } from "../lib/rbac";
 
 // Đơn hàng (Giai đoạn 2) — bắt buộc gắn với một tài khoản khách hàng
 // (collection "customers"), không còn cho đặt hàng dạng khách vãng lai.
@@ -12,13 +13,20 @@ export const Orders: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => {
       if (!user) return false;
-      if (user.collection === "users") return true; // admin xem tất cả đơn
+      // Trả thẳng boolean của hasRole — cùng lý do với Customers.ts ở trên,
+      // tránh một nhân viên không đủ quyền rơi xuống nhánh lọc theo user.id
+      // vốn chỉ đúng cho tài khoản customers.
+      if (user.collection === "users") return hasRole(user, ["admin", "sales", "accountant"]);
       return { customer: { equals: user.id } }; // khách chỉ xem đơn của mình
     },
     // Đơn chỉ được tạo bởi khách đã đăng nhập (qua app/api/orders/route.ts,
     // route này tự xác thực bằng payload.auth() trước khi gọi payload.create)
     // hoặc bởi admin thao tác trong trang quản trị.
     create: ({ req: { user } }) => Boolean(user),
+    // Trước đây không định nghĩa delete nên mặc định Boolean(user) của
+    // Payload — bất kỳ tài khoản đăng nhập nào (kể cả customers) xoá được
+    // BẤT KỲ đơn hàng nào, không chỉ đơn của chính mình.
+    delete: ({ req: { user } }) => hasRole(user, ["admin", "sales", "accountant"]),
   },
   hooks: {
     afterChange: [

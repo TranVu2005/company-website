@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { hasRole } from "../lib/rbac";
 
 // Tài khoản khách hàng (Giai đoạn 2) — tách riêng khỏi "Users" (nhân sự nội
 // bộ/admin) vì khác hoàn toàn về quyền hạn: khách hàng chỉ được xem/sửa hồ
@@ -17,15 +18,20 @@ export const Customers: CollectionConfig = {
     create: () => true,
     read: ({ req: { user } }) => {
       if (!user) return false;
-      if (user.collection === "users") return true; // admin xem tất cả
+      // QUAN TRỌNG: trả thẳng boolean của hasRole (không phải luôn `true`)
+      // để một nhân viên KHÔNG đủ quyền (vd editor) bị chặn hẳn ở đây, thay
+      // vì rơi xuống nhánh { id: { equals: user.id } } phía dưới — nhánh đó
+      // chỉ đúng khi user là tài khoản customers, dùng user.id (là Users.id
+      // của editor) để lọc Customers.id sẽ vô tình khớp nhầm bản ghi khác.
+      if (user.collection === "users") return hasRole(user, ["admin", "sales", "accountant"]);
       return { id: { equals: user.id } }; // khách chỉ xem chính mình
     },
     update: ({ req: { user } }) => {
       if (!user) return false;
-      if (user.collection === "users") return true;
+      if (user.collection === "users") return hasRole(user, ["admin", "sales", "accountant"]);
       return { id: { equals: user.id } };
     },
-    delete: ({ req: { user } }) => user?.collection === "users",
+    delete: ({ req: { user } }) => hasRole(user, ["admin", "sales", "accountant"]),
   },
   fields: [
     { name: "name", type: "text", required: true, label: "Họ tên" },
@@ -47,8 +53,8 @@ export const Customers: CollectionConfig = {
         // thiếu create thì một khách có thể tự đăng ký với segment:"vip"
         // ngay từ đầu (Payload chỉ áp field-level access khi field.access có
         // đúng key của operation đang chạy).
-        create: ({ req: { user } }) => user?.collection === "users",
-        update: ({ req: { user } }) => user?.collection === "users",
+        create: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
+        update: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
       },
     },
     {
@@ -60,8 +66,8 @@ export const Customers: CollectionConfig = {
         description: "Khi bật, hệ thống không tự tính lại nhóm theo doanh số.",
       },
       access: {
-        create: ({ req: { user } }) => user?.collection === "users",
-        update: ({ req: { user } }) => user?.collection === "users",
+        create: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
+        update: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
       },
     },
   ],
