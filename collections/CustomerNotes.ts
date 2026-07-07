@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { hasRole } from "../lib/rbac";
 
 // Ghi chú/hoạt động sales gắn với 1 khách hàng (Giai đoạn 3 - CRM). Hoàn toàn
 // nội bộ: khách hàng không bao giờ được đọc hay ghi nhóm dữ liệu này, vì đây
@@ -10,10 +11,10 @@ export const CustomerNotes: CollectionConfig = {
     defaultColumns: ["customer", "type", "author", "createdAt"],
   },
   access: {
-    read: ({ req: { user } }) => user?.collection === "users",
-    create: ({ req: { user } }) => user?.collection === "users",
-    update: ({ req: { user } }) => user?.collection === "users",
-    delete: ({ req: { user } }) => user?.collection === "users",
+    read: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
+    create: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
+    update: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
+    delete: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
   },
   fields: [
     {

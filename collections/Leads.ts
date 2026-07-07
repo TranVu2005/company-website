@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { hasRole } from "../lib/rbac";
 
 // Collection lưu thông tin liên hệ từ form website (Giai đoạn 1)
 export const Leads: CollectionConfig = {
@@ -8,7 +9,7 @@ export const Leads: CollectionConfig = {
     defaultColumns: ["name", "email", "phone", "subject", "status", "createdAt"],
   },
   access: {
-    read: ({ req: { user } }) => user?.collection === "users",
+    read: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
     create: () => true, // Public form submission
   },
   fields: [
