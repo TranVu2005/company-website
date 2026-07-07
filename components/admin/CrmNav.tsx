@@ -1,8 +1,11 @@
-// Link "CRM" trong sidebar /admin. Không cần tự kiểm tra quyền ở đây — toàn
-// bộ khung /admin (admin.user = Users.slug trong payload.config.ts) đã chỉ
-// cho tài khoản "users" đăng nhập được vào, khách hàng (customers) không thể
-// vào /admin dù có cookie hợp lệ.
-export function CrmNav() {
+import type { ServerProps } from "payload";
+import { hasRole } from "@/lib/rbac";
+
+// Link "CRM" trong sidebar /admin. Chỉ hiện với role admin/sales — đây chỉ
+// là UX (ẩn link cho role không dùng tới), rào chắn thật nằm ở guard trong
+// CrmListView/CrmDetailView và các route /api/crm/*.
+export function CrmNav({ user }: ServerProps) {
+  if (!hasRole(user, ["admin", "sales"])) return null;
   return (
     <a
       href="/admin/crm"

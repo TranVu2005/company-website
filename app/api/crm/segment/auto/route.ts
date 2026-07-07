@@ -2,6 +2,7 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 import { recomputeSegment } from "@/lib/crm";
 import { parseActionBody, isFormRequest, crmActionRedirect } from "@/lib/parseActionBody";
+import { hasRole } from "@/lib/rbac";
 
 // Bỏ ghi đè thủ công và tính lại nhóm theo doanh số hiện tại.
 export async function POST(request: Request) {
@@ -11,7 +12,7 @@ export async function POST(request: Request) {
   try {
     const payload = await getPayload({ config });
     const { user } = await payload.auth({ headers: request.headers });
-    if (!user || user.collection !== "users") {
+    if (!user || !hasRole(user, ["admin", "sales"])) {
       if (isForm) return crmActionRedirect(request, undefined, "Không có quyền");
       return Response.json({ message: "Không có quyền" }, { status: 403 });
     }

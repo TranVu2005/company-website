@@ -1,6 +1,7 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { parseActionBody, isFormRequest, crmActionRedirect } from "@/lib/parseActionBody";
+import { hasRole } from "@/lib/rbac";
 
 const VALID_TYPES = ["note", "call", "meeting", "email", "other"];
 
@@ -13,7 +14,7 @@ export async function POST(request: Request) {
   try {
     const payload = await getPayload({ config });
     const { user } = await payload.auth({ headers: request.headers });
-    if (!user || user.collection !== "users") {
+    if (!user || !hasRole(user, ["admin", "sales"])) {
       if (isForm) return crmActionRedirect(request, undefined, "Không có quyền");
       return Response.json({ message: "Không có quyền" }, { status: 403 });
     }

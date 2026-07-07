@@ -2,6 +2,7 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 import type { CustomerSegment } from "@/lib/crm";
 import { parseActionBody, isFormRequest, crmActionRedirect } from "@/lib/parseActionBody";
+import { hasRole } from "@/lib/rbac";
 
 const VALID_SEGMENTS: CustomerSegment[] = ["new", "potential", "vip"];
 
@@ -15,7 +16,7 @@ export async function POST(request: Request) {
   try {
     const payload = await getPayload({ config });
     const { user } = await payload.auth({ headers: request.headers });
-    if (!user || user.collection !== "users") {
+    if (!user || !hasRole(user, ["admin", "sales"])) {
       if (isForm) return crmActionRedirect(request, undefined, "Không có quyền");
       return Response.json({ message: "Không có quyền" }, { status: 403 });
     }

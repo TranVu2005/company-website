@@ -1,4 +1,5 @@
 import type { AdminViewServerProps } from "payload";
+import { hasRole } from "@/lib/rbac";
 
 const SEGMENT_LABELS: Record<string, string> = {
   new: "Mới",
@@ -9,8 +10,8 @@ const SEGMENT_LABELS: Record<string, string> = {
 export async function CrmListView({ initPageResult, searchParams }: AdminViewServerProps) {
   const { req } = initPageResult;
 
-  // Phòng thủ thêm dù khung /admin đã chặn non-"users" truy cập.
-  if (req.user?.collection !== "users") {
+  // Chỉ role admin/sales được xem CRM.
+  if (!hasRole(req.user, ["admin", "sales"])) {
     return <div style={{ padding: 24 }}>Không có quyền truy cập.</div>;
   }
 

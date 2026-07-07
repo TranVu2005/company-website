@@ -1,5 +1,6 @@
 import type { AdminViewServerProps } from "payload";
 import { getCustomerTimeline } from "@/lib/crm";
+import { hasRole } from "@/lib/rbac";
 
 const SEGMENT_LABELS: Record<string, string> = {
   new: "Mới",
@@ -16,7 +17,7 @@ const KIND_LABELS: Record<string, string> = {
 export async function CrmDetailView({ initPageResult, params, searchParams }: AdminViewServerProps) {
   const { req } = initPageResult;
 
-  if (req.user?.collection !== "users") {
+  if (!hasRole(req.user, ["admin", "sales"])) {
     return <div style={{ padding: 24 }}>Không có quyền truy cập.</div>;
   }
 
