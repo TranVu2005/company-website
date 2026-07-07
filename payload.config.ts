@@ -38,7 +38,7 @@ export default buildConfig({
           path: "/crm/:id",
           exact: true,
         },
-        dashboard: {
+        dashboardMetrics: {
           Component: "/components/admin/DashboardView#DashboardView",
           path: "/dashboard",
           exact: true,
