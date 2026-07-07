@@ -1,9 +1,15 @@
 import type { CollectionConfig } from "payload";
+import { hasRole } from "../lib/rbac";
 
 export const News: CollectionConfig = {
   slug: "news",
   admin: { useAsTitle: "title", defaultColumns: ["title", "date", "slug"] },
-  access: { read: () => true },
+  access: {
+    read: () => true,
+    create: ({ req: { user } }) => hasRole(user, []),
+    update: ({ req: { user } }) => hasRole(user, []),
+    delete: ({ req: { user } }) => hasRole(user, []),
+  },
   fields: [
     {
       name: "slug",

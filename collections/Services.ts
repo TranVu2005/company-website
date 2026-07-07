@@ -1,7 +1,14 @@
 import type { CollectionConfig } from "payload";
+import { hasRole } from "../lib/rbac";
 
-// Công khai cho read; ghi yêu cầu đăng nhập (mặc định Payload).
-const publicRead = { read: () => true };
+// Công khai cho read; ghi chỉ role admin (trước đây mặc định Boolean(user)
+// của Payload — bất kỳ ai đăng nhập, kể cả khách hàng, cũng ghi được).
+const publicRead: CollectionConfig["access"] = {
+  read: () => true,
+  create: ({ req: { user } }) => hasRole(user, []),
+  update: ({ req: { user } }) => hasRole(user, []),
+  delete: ({ req: { user } }) => hasRole(user, []),
+};
 
 export const Services: CollectionConfig = {
   slug: "services",

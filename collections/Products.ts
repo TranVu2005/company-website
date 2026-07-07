@@ -1,9 +1,15 @@
 import type { CollectionConfig } from "payload";
+import { hasRole } from "../lib/rbac";
 
 export const Products: CollectionConfig = {
   slug: "products",
   admin: { useAsTitle: "name", defaultColumns: ["name", "slug"] },
-  access: { read: () => true },
+  access: {
+    read: () => true,
+    create: ({ req: { user } }) => hasRole(user, []),
+    update: ({ req: { user } }) => hasRole(user, []),
+    delete: ({ req: { user } }) => hasRole(user, []),
+  },
   fields: [
     {
       name: "slug",
@@ -14,6 +20,14 @@ export const Products: CollectionConfig = {
     },
     { name: "name", type: "text", required: true },
     { name: "tagline", type: "text" },
+    {
+      name: "price",
+      type: "number",
+      required: true,
+      defaultValue: 0,
+      min: 0,
+      admin: { description: "Giá bán (VNĐ), vd: 2500000" },
+    },
     { name: "image", type: "text", admin: { description: "URL ảnh đại diện" } },
     { name: "details", type: "textarea" },
     {
