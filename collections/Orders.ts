@@ -23,6 +23,13 @@ export const Orders: CollectionConfig = {
     // route này tự xác thực bằng payload.auth() trước khi gọi payload.create)
     // hoặc bởi admin thao tác trong trang quản trị.
     create: ({ req: { user } }) => Boolean(user),
+    // Trước đây không định nghĩa update nên mặc định Boolean(user) của
+    // Payload — bất kỳ tài khoản đăng nhập nào (kể cả customers) sửa được
+    // BẤT KỲ đơn hàng nào (paymentStatus, total, shippingAddress, status...)
+    // qua PATCH /api/orders/:id, vì route Next.js chỉ shadow /api/orders
+    // (POST/GET), không shadow endpoint theo id. Khách không có quyền sửa
+    // đơn, kể cả đơn của chính mình.
+    update: ({ req: { user } }) => hasRole(user, ["admin", "sales", "accountant"]),
     // Trước đây không định nghĩa delete nên mặc định Boolean(user) của
     // Payload — bất kỳ tài khoản đăng nhập nào (kể cả customers) xoá được
     // BẤT KỲ đơn hàng nào, không chỉ đơn của chính mình.

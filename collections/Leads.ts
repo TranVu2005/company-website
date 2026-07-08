@@ -11,6 +11,11 @@ export const Leads: CollectionConfig = {
   access: {
     read: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
     create: () => true, // Public form submission
+    // Trước đây không định nghĩa update/delete nên mặc định Boolean(user)
+    // của Payload — bất kỳ tài khoản đăng nhập nào (kể cả customers) sửa
+    // hoặc xoá được bất kỳ lead nào. Leads thuộc nhóm CRM, chỉ admin/sales.
+    update: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
+    delete: ({ req: { user } }) => hasRole(user, ["admin", "sales"]),
   },
   fields: [
     { name: "name", type: "text", required: true },
