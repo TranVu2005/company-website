@@ -3,7 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 // CSS tùy chỉnh của các component (navbar, hero, services... + biến --accent-primary).
 // Import sau globals.css để ghi đè reset của Tailwind khi cần.
-import "@/src/styles/index.css";
+import "@/styles/index.css";
 
 import { SearchProvider } from "@/components/SearchContext";
 import { CustomerAuthProvider } from "@/components/CustomerAuthContext";

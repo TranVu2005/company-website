@@ -6,10 +6,10 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { getErrorMessage } from "@/lib/errors";
 
-const srcDataDir = path.resolve(process.cwd(), "src/data");
+const seedDataDir = path.resolve(process.cwd(), "data");
 
 function loadJson(filename: string) {
-  const filePath = path.join(srcDataDir, filename);
+  const filePath = path.join(seedDataDir, filename);
   const content = fs.readFileSync(filePath, "utf-8");
   return JSON.parse(content);
 }
