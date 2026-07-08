@@ -69,13 +69,14 @@ export async function getCustomerTimeline(payload: Payload, customerId: string |
       limit: 0,
       depth: 1,
     }),
-    customer?.email
-      ? payload.find({
-          collection: "leads",
-          where: { email: { equals: customer.email } },
-          limit: 0,
-        })
-      : Promise.resolve({ docs: [] as any[] }),
+    payload.find({
+      collection: "leads",
+      // Không có email khách (hiếm, dữ liệu thiếu) → where không khớp gì cả,
+      // trả về docs rỗng, tránh phải tự tạo shape kết quả giả (any) khớp tay
+      // với PaginatedDocs của payload.find.
+      where: customer?.email ? { email: { equals: customer.email } } : { id: { equals: -1 } },
+      limit: 0,
+    }),
   ]);
 
   const events: TimelineEvent[] = [];

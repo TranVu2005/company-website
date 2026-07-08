@@ -1,5 +1,6 @@
 import { verifyZaloPayCallbackMac } from "@/lib/zalopay";
 import { getOrderNumberByGatewayRef, markOrderPaymentResult } from "@/lib/orders";
+import { getErrorMessage } from "@/lib/errors";
 
 // Callback server-to-server của ZaloPay: chỉ được gọi khi thanh toán THÀNH
 // CÔNG (không có callback riêng cho thất bại/hủy) và chỉ hoạt động khi
@@ -26,8 +27,8 @@ export async function POST(request: Request) {
     await markOrderPaymentResult(orderNumber, true, String(data.zp_trans_id || ""));
 
     return Response.json({ return_code: 1, return_message: "success" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("ZaloPay callback error:", error);
-    return Response.json({ return_code: 0, return_message: error.message });
+    return Response.json({ return_code: 0, return_message: getErrorMessage(error) });
   }
 }

@@ -1,4 +1,5 @@
 import type { AdminViewServerProps } from "payload";
+import Link from "next/link";
 import { hasRole } from "@/lib/rbac";
 
 const SEGMENT_LABELS: Record<string, string> = {
@@ -51,13 +52,13 @@ export async function CrmListView({ initPageResult, searchParams }: AdminViewSer
     <div style={{ padding: 24 }}>
       <h1>CRM — Khách hàng</h1>
       <div style={{ margin: "12px 0" }}>
-        <a href="/admin/crm">Tất cả</a>
+        <Link href="/admin/crm">Tất cả</Link>
         {" · "}
-        <a href="/admin/crm?segment=new">Mới</a>
+        <Link href="/admin/crm?segment=new">Mới</Link>
         {" · "}
-        <a href="/admin/crm?segment=potential">Tiềm năng</a>
+        <Link href="/admin/crm?segment=potential">Tiềm năng</Link>
         {" · "}
-        <a href="/admin/crm?segment=vip">VIP</a>
+        <Link href="/admin/crm?segment=vip">VIP</Link>
       </div>
       <table style={{ width: "100%", borderCollapse: "collapse" }}>
         <thead>

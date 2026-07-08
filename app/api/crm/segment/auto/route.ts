@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     if (isForm) return crmActionRedirect(request, customerId);
     const doc = await payload.findByID({ collection: "customers", id: customerId });
     return Response.json({ message: "Đã quay lại tự động phân nhóm", doc });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[crm] auto segment error:", error);
     if (isForm) return crmActionRedirect(request, customerId, "Có lỗi xảy ra");
     return Response.json({ message: "Có lỗi xảy ra" }, { status: 500 });

@@ -43,7 +43,7 @@ export async function GET(request: NextRequest) {
     await markOrderPaymentResult(orderNumber, success, params.vnp_TransactionNo);
 
     return Response.json({ RspCode: "00", Message: "Confirm Success" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("VNPay IPN error:", error);
     return Response.json({ RspCode: "99", Message: "Unknown error" });
   }

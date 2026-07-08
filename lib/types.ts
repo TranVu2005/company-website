@@ -100,3 +100,32 @@ export interface SearchResult {
   section: "service" | "product" | "news";
   id: string;
 }
+
+export interface OrderItem {
+  productId: string;
+  productName: string;
+  quantity: number;
+  price: number;
+}
+
+export interface Order {
+  id: number;
+  orderNumber: string;
+  customerName: string;
+  customerEmail: string;
+  customerPhone: string;
+  customerCompany?: string;
+  shippingAddress: string;
+  note?: string;
+  items: OrderItem[];
+  subtotal: number;
+  shippingFee?: number;
+  total: number;
+  status: "pending" | "paid" | "processing" | "shipping" | "delivered" | "cancelled";
+  paymentMethod?: "vnpay" | "momo" | "zalopay" | "bank_transfer" | "cod";
+  paymentStatus: "unpaid" | "paid" | "failed" | "refunded";
+  paymentTransactionId?: string;
+  gatewayRef?: string;
+  createdAt: string;
+  updatedAt: string;
+}

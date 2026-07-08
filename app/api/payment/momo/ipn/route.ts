@@ -1,5 +1,6 @@
 import { verifyMomoSignature } from "@/lib/momo";
 import { markOrderPaymentResult } from "@/lib/orders";
+import { getErrorMessage } from "@/lib/errors";
 
 // IPN (Instant Payment Notification): MoMo gọi thẳng server-to-server sau
 // khi khách thanh toán xong, không qua trình duyệt của khách — đây là nguồn
@@ -38,8 +39,8 @@ export async function POST(request: Request) {
 
     // MoMo yêu cầu phản hồi nhanh với HTTP 204/200 để xác nhận đã nhận IPN.
     return new Response(null, { status: 204 });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("MoMo IPN error:", error);
-    return Response.json({ message: error.message }, { status: 500 });
+    return Response.json({ message: getErrorMessage(error) }, { status: 500 });
   }
 }

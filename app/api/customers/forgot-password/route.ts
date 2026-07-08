@@ -56,7 +56,7 @@ export async function POST(request: Request) {
     }
 
     return Response.json({ message: "Nếu email tồn tại, liên kết đặt lại mật khẩu đã được gửi." });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Forgot password error:", error);
     return Response.json({ message: "Có lỗi xảy ra, vui lòng thử lại." }, { status: 500 });
   }

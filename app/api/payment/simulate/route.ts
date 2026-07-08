@@ -1,6 +1,7 @@
 import { getPayload } from "payload";
 import config from "../../../../payload.config";
 import { sendPaymentResultEmail } from "@/lib/email";
+import { getErrorMessage } from "@/lib/errors";
 
 // Mô phỏng cổng thanh toán (Giai đoạn 2 - chưa tích hợp VNPay/MoMo/ZaloPay thật).
 // Kết quả thành công/thất bại được quyết định và áp dụng hoàn toàn ở server để
@@ -53,8 +54,8 @@ export async function POST(request: Request) {
     });
 
     return Response.json({ success: true, status: isSuccess ? "paid" : "failed" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Payment simulate error:", error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }

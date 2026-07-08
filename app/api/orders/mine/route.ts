@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { getErrorMessage } from "@/lib/errors";
 
 // Danh sách đơn hàng của tài khoản khách hàng đang đăng nhập, dùng cho trang
 // /account. Khác với GET /api/orders (tra cứu công khai theo mã đơn), route
@@ -21,8 +22,8 @@ export async function GET(request: Request) {
     });
 
     return Response.json({ success: true, orders: result.docs });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Fetch my orders error:", error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }

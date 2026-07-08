@@ -4,6 +4,7 @@ import config from "../../../payload.config";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { getErrorMessage } from "@/lib/errors";
 
 const srcDataDir = path.resolve(process.cwd(), "src/data");
 
@@ -53,12 +54,14 @@ export async function GET() {
           name: companyData.name,
           tagline: companyData.tagline,
           description: companyData.description,
-          technologies: companyData.technologies?.map((t: any) => ({
-            techId: t.id,
-            name: t.name,
-            description: t.description,
-            icon: t.icon,
-          })),
+          technologies: companyData.technologies?.map(
+            (t: { id: string; name: string; description: string; icon: string }) => ({
+              techId: t.id,
+              name: t.name,
+              description: t.description,
+              icon: t.icon,
+            })
+          ),
           contact: companyData.contact,
           socials: companyData.socials,
         },
@@ -222,8 +225,8 @@ export async function GET() {
 
     console.log("🎉 Seed completed!");
     return NextResponse.json({ success: true, results });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("❌ Seed failed:", error);
-    return NextResponse.json({ success: false, error: error.message }, { status: 500 });
+    return NextResponse.json({ success: false, error: getErrorMessage(error) }, { status: 500 });
   }
 }

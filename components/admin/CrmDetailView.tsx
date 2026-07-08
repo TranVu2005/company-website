@@ -1,4 +1,5 @@
 import type { AdminViewServerProps } from "payload";
+import Link from "next/link";
 import { getCustomerTimeline } from "@/lib/crm";
 import { hasRole } from "@/lib/rbac";
 
@@ -38,7 +39,7 @@ export async function CrmDetailView({ initPageResult, params, searchParams }: Ad
   return (
     <div style={{ padding: 24 }}>
       <p>
-        <a href="/admin/crm">← Danh sách khách hàng</a>
+        <Link href="/admin/crm">← Danh sách khách hàng</Link>
       </p>
       {errorMessage ? (
         <p style={{ color: "#b91c1c", background: "#fee2e2", padding: "8px 12px", borderRadius: 4 }}>

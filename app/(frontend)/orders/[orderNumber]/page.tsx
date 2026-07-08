@@ -5,6 +5,7 @@ import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Clock, Package, Truck, XCircle, Search } from "lucide-react";
 import { useCustomerAuth } from "@/components/CustomerAuthContext";
+import type { Order } from "@/lib/types";
 
 function OrderTrackingContent() {
   const params = useParams<{ orderNumber: string }>();
@@ -13,7 +14,7 @@ function OrderTrackingContent() {
   const { customer, loading: authLoading } = useCustomerAuth();
   const orderNumber = params.orderNumber;
   const status = searchParams.get("status");
-  const [order, setOrder] = useState<any>(null);
+  const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState(orderNumber || "");
 
@@ -177,7 +178,7 @@ function OrderTrackingContent() {
           <div className="p-6 bg-white rounded-lg shadow-sm border">
             <h3 className="font-semibold mb-4">Chi tiết đơn hàng</h3>
             <div className="space-y-3">
-              {order.items?.map((item: any, idx: number) => (
+              {order.items?.map((item, idx) => (
                 <div key={idx} className="flex justify-between">
                   <span>{item.productName} x{item.quantity}</span>
                   <span>{(item.price * item.quantity).toLocaleString("vi-VN")} đ</span>

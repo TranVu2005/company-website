@@ -1,4 +1,5 @@
 import type { ServerProps } from "payload";
+import Link from "next/link";
 import { hasRole } from "@/lib/rbac";
 
 // Link "Dashboard" trong sidebar /admin. Chỉ hiện với role admin/sales/kế
@@ -6,7 +7,7 @@ import { hasRole } from "@/lib/rbac";
 export function DashboardNav({ user }: ServerProps) {
   if (!hasRole(user, ["admin", "sales", "accountant"])) return null;
   return (
-    <a
+    <Link
       href="/admin/dashboard"
       style={{
         display: "block",
@@ -15,6 +16,6 @@ export function DashboardNav({ user }: ServerProps) {
       }}
     >
       Dashboard
-    </a>
+    </Link>
   );
 }

@@ -1,4 +1,5 @@
 import type { ServerProps } from "payload";
+import Link from "next/link";
 import { hasRole } from "@/lib/rbac";
 
 // Link "CRM" trong sidebar /admin. Chỉ hiện với role admin/sales — đây chỉ
@@ -7,7 +8,7 @@ import { hasRole } from "@/lib/rbac";
 export function CrmNav({ user }: ServerProps) {
   if (!hasRole(user, ["admin", "sales"])) return null;
   return (
-    <a
+    <Link
       href="/admin/crm"
       style={{
         display: "block",
@@ -16,6 +17,6 @@ export function CrmNav({ user }: ServerProps) {
       }}
     >
       CRM
-    </a>
+    </Link>
   );
 }

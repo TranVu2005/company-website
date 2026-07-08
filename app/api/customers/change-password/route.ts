@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     });
 
     return Response.json({ message: "Đổi mật khẩu thành công" });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Change password error:", error);
     return Response.json({ message: "Có lỗi xảy ra, vui lòng thử lại." }, { status: 500 });
   }

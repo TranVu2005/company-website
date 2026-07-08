@@ -41,7 +41,7 @@ export async function POST(request: Request) {
     // POST — quay lại trang chi tiết khách thay vì để admin nhìn JSON thô.
     if (isForm) return crmActionRedirect(request, customerId);
     return Response.json({ message: "Đã cập nhật nhóm khách hàng", doc });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[crm] set segment error:", error);
     if (isForm) return crmActionRedirect(request, customerId, "Có lỗi xảy ra");
     return Response.json({ message: "Có lỗi xảy ra" }, { status: 500 });

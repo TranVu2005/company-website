@@ -6,6 +6,7 @@ import { createMomoPayment } from "@/lib/momo";
 import { createVnpayPaymentUrl, isVnpayConfigured } from "@/lib/vnpay";
 import { createZaloPayOrder, generateZaloPayAppTransId } from "@/lib/zalopay";
 import { setOrderGatewayRef } from "@/lib/orders";
+import { getErrorMessage } from "@/lib/errors";
 
 export async function POST(request: Request) {
   try {
@@ -82,14 +83,14 @@ export async function POST(request: Request) {
           orderNumber: body.orderNumber,
           paymentUrl: momoResult.payUrl,
         });
-      } catch (momoError: any) {
+      } catch (momoError: unknown) {
         console.error("MoMo create payment error:", momoError);
         return Response.json(
           {
             success: false,
             error:
               "Không thể khởi tạo thanh toán MoMo: " +
-              (momoError.message || "Vui lòng thử lại."),
+              (getErrorMessage(momoError) || "Vui lòng thử lại."),
           },
           { status: 502 }
         );
@@ -126,14 +127,14 @@ export async function POST(request: Request) {
           orderNumber: body.orderNumber,
           paymentUrl,
         });
-      } catch (vnpayError: any) {
+      } catch (vnpayError: unknown) {
         console.error("VNPay create payment error:", vnpayError);
         return Response.json(
           {
             success: false,
             error:
               "Không thể khởi tạo thanh toán VNPay: " +
-              (vnpayError.message || "Vui lòng thử lại."),
+              (getErrorMessage(vnpayError) || "Vui lòng thử lại."),
           },
           { status: 502 }
         );
@@ -164,14 +165,14 @@ export async function POST(request: Request) {
           orderNumber: body.orderNumber,
           paymentUrl: zaloResult.orderUrl,
         });
-      } catch (zaloError: any) {
+      } catch (zaloError: unknown) {
         console.error("ZaloPay create payment error:", zaloError);
         return Response.json(
           {
             success: false,
             error:
               "Không thể khởi tạo thanh toán ZaloPay: " +
-              (zaloError.message || "Vui lòng thử lại."),
+              (getErrorMessage(zaloError) || "Vui lòng thử lại."),
           },
           { status: 502 }
         );
@@ -184,10 +185,10 @@ export async function POST(request: Request) {
       orderId: order.id,
       orderNumber: body.orderNumber,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Order creation error:", error);
     return Response.json(
-      { success: false, error: error.message || "Không thể tạo đơn hàng" },
+      { success: false, error: getErrorMessage(error) || "Không thể tạo đơn hàng" },
       { status: 500 }
     );
   }
@@ -231,8 +232,8 @@ export async function GET(request: Request) {
     }
 
     return Response.json({ success: true, order: result.docs[0] });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Order fetch error:", error);
-    return Response.json({ error: error.message }, { status: 500 });
+    return Response.json({ error: getErrorMessage(error) }, { status: 500 });
   }
 }
