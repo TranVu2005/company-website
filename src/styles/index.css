@@ -1,23 +1,25 @@
-@import './variables.css';
-@import './reset.css';
-@import './typography.css';
-@import './layout.css';
-@import './animations.css';
+/* Toàn bộ CSS thuần cũ nằm trong layer "legacy" (thứ tự khai báo ở
+   globals.css) để không còn âm thầm đè lên các class Tailwind. */
+@import './variables.css' layer(legacy);
+@import './reset.css' layer(legacy);
+@import './typography.css' layer(legacy);
+@import './layout.css' layer(legacy);
+@import './animations.css' layer(legacy);
 
-@import './components/search.css';
-@import './components/loading.css';
-@import './components/navbar.css';
-@import './components/hero.css';
-@import './components/about.css';
-@import './components/services.css';
-@import './components/products.css';
-@import './components/team.css';
-@import './components/stats.css';
-@import './components/clients.css';
-@import './components/news.css';
-@import './components/contact.css';
-@import './components/footer.css';
-@import './components/detail.css';
+@import './components/search.css' layer(legacy);
+@import './components/loading.css' layer(legacy);
+@import './components/navbar.css' layer(legacy);
+@import './components/hero.css' layer(legacy);
+@import './components/about.css' layer(legacy);
+@import './components/services.css' layer(legacy);
+@import './components/products.css' layer(legacy);
+@import './components/team.css' layer(legacy);
+@import './components/stats.css' layer(legacy);
+@import './components/clients.css' layer(legacy);
+@import './components/news.css' layer(legacy);
+@import './components/contact.css' layer(legacy);
+@import './components/footer.css' layer(legacy);
+@import './components/detail.css' layer(legacy);
 
 /* Lucide Icons */
 i[data-lucide] {

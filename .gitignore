@@ -12,6 +12,18 @@ dist
 dist-ssr
 *.local
 
+# Next.js
+.next/
+/out/
+next-env.d.ts
+.vercel
+*.tsbuildinfo
+
+# Local lead store (Giai đoạn 1) + env
+.data/
+.env
+.env*.local
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
