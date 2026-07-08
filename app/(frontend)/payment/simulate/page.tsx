@@ -3,46 +3,46 @@
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";
+import { useCartStore } from "@/lib/cart-store";
 
 function PaymentSimulateContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const clearCart = useCartStore((s) => s.clearCart);
   const [status, setStatus] = useState<"processing" | "success" | "failed">("processing");
   const orderNumber = searchParams.get("order");
   const method = searchParams.get("method");
   const amount = searchParams.get("amount");
 
   useEffect(() => {
-    // Simulate payment processing (3 seconds)
+    // Mô phỏng xử lý thanh toán (3 giây) - kết quả do server quyết định và áp dụng
     const timer = setTimeout(async () => {
-      // Simulate 90% success rate
-      const isSuccess = Math.random() > 0.1;
-      
-      if (isSuccess) {
-        setStatus("success");
-        // Update order payment status via API
-        try {
-          await fetch("/api/payment/callback", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              orderNumber,
-              status: "paid",
-              transactionId: `TXN-${Date.now()}`,
-            }),
-          });
-        } catch (e) {
-          console.log("Payment callback error:", e);
+      try {
+        const res = await fetch("/api/payment/simulate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ orderNumber }),
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === "paid") {
+          setStatus("success");
+          // Thanh toán thành công mới xoá giỏ hàng — nếu thất bại, giỏ hàng
+          // vẫn còn nguyên để khách đặt lại.
+          clearCart();
+          // Chuyển hướng đến trang đơn hàng sau 2 giây
+          setTimeout(() => router.push(`/orders/${orderNumber}?status=paid`), 2000);
+        } else {
+          setStatus("failed");
         }
-        // Redirect to order page after 2 seconds
-        setTimeout(() => router.push(`/orders/${orderNumber}?status=paid`), 2000);
-      } else {
+      } catch (e) {
+        console.log("Payment simulate error:", e);
         setStatus("failed");
       }
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [orderNumber, router]);
+  }, [orderNumber, router, clearCart]);
 
   const methodLabels: Record<string, string> = {
     vnpay: "VNPay",
@@ -51,7 +51,7 @@ function PaymentSimulateContent() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4 page-content-offset">
       <div className="max-w-md w-full text-center p-8 bg-white rounded-xl shadow-lg">
         {status === "processing" && (
           <>
