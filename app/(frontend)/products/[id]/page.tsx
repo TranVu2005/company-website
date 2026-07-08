@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProducts, getProductById } from "@/lib/data";
 import Icon from "@/components/Icon";
+import { AddToCartButton } from "@/components/AddToCartButton";
 
 // Pre-render tất cả trang sản phẩm (SSG)
 export async function generateStaticParams() {
@@ -54,6 +55,12 @@ export default async function ProductDetailPage({
         <div className="container detail-content reveal delay-200">
           <div className="product-row" style={{ marginTop: 0 }}>
             <div className="product-content">
+              <p
+                className="text-primary font-bold"
+                style={{ fontSize: "1.5rem" }}
+              >
+                {product.price.toLocaleString("vi-VN")} đ
+              </p>
               <h3>Mô tả sản phẩm</h3>
               <p>{product.details}</p>
               <h3 style={{ marginTop: "2rem" }}>Tính năng nổi bật</h3>
@@ -69,15 +76,25 @@ export default async function ProductDetailPage({
                   </li>
                 ))}
               </ul>
-              <div style={{ marginTop: "2rem" }}>
-                <Link href="/" className="btn btn-outline">
+              <div
+                style={{
+                  marginTop: "2rem",
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "1rem",
+                  alignItems: "center",
+                }}
+              >
+                <AddToCartButton
+                  id={product.id}
+                  name={product.name}
+                  image={product.image}
+                  price={product.price}
+                />
+                <Link href="/products" className="btn btn-outline">
                   ← Quay lại
                 </Link>
-                <Link
-                  href="/#contact-root"
-                  className="btn btn-primary"
-                  style={{ marginLeft: "1rem" }}
-                >
+                <Link href="/#contact-root" className="btn btn-primary">
                   Yêu cầu Demo
                 </Link>
               </div>

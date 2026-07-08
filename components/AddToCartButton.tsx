@@ -24,11 +24,8 @@ export function AddToCartButton({ id, name, image, price = 0 }: ProductCardProps
   return (
     <button
       onClick={handleAdd}
-      className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all text-sm ${
-        added
-          ? "bg-green-500 text-white"
-          : "bg-primary text-white hover:bg-primary/90"
-      }`}
+      className="btn btn-primary gap-2"
+      style={added ? { background: "#22c55e", boxShadow: "none" } : undefined}
     >
       {added ? (
         <>

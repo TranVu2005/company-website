@@ -52,6 +52,7 @@ export interface Product {
   slug: string;
   name: string;
   tagline: string;
+  price: number;
   image: string;
   details: string;
   features: Feature[];

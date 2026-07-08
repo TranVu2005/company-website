@@ -1,29 +1,41 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle, Clock, Package, Truck, XCircle, Search } from "lucide-react";
+import { useCustomerAuth } from "@/components/CustomerAuthContext";
 
 function OrderTrackingContent() {
+  const params = useParams<{ orderNumber: string }>();
   const searchParams = useSearchParams();
-  const orderNumber = searchParams.get("order");
+  const router = useRouter();
+  const { customer, loading: authLoading } = useCustomerAuth();
+  const orderNumber = params.orderNumber;
+  const status = searchParams.get("status");
   const [order, setOrder] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [searchInput, setSearchInput] = useState(orderNumber || "");
 
   useEffect(() => {
+    if (!authLoading && !customer) {
+      router.push(`/login?redirect=/orders/${orderNumber || ""}`);
+    }
+  }, [authLoading, customer, router, orderNumber]);
+
+  useEffect(() => {
+    if (!customer) return;
     if (orderNumber) {
       fetchOrder(orderNumber);
     } else {
       setLoading(false);
     }
-  }, [orderNumber]);
+  }, [orderNumber, customer]);
 
   const fetchOrder = async (num: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/orders?orderNumber=${num}`);
+      const res = await fetch(`/api/orders?orderNumber=${num}`, { credentials: "include" });
       const data = await res.json();
       if (data.success) {
         setOrder(data.order);
@@ -38,7 +50,7 @@ function OrderTrackingContent() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchInput.trim()) {
-      fetchOrder(searchInput.trim());
+      router.push(`/orders/${searchInput.trim()}`);
     }
   };
 
@@ -55,9 +67,24 @@ function OrderTrackingContent() {
     return idx >= 0 ? idx : 0;
   };
 
+  if (authLoading || !customer) {
+    return <div className="min-h-screen flex items-center justify-center">Đang tải...</div>;
+  }
+
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Theo dõi đơn hàng</h1>
+    <div className="max-w-3xl mx-auto px-4 page-content-offset pb-12">
+      <h1 className="page-title font-bold mb-8">Theo dõi đơn hàng</h1>
+
+      {status === "new" && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+          Đặt hàng thành công! Chúng tôi sẽ liên hệ để xác nhận đơn hàng sớm nhất.
+        </div>
+      )}
+      {status === "paid" && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-700 rounded-lg">
+          Thanh toán thành công! Đơn hàng của bạn đang được xử lý.
+        </div>
+      )}
 
       {/* Search */}
       <form onSubmit={handleSearch} className="flex gap-2 mb-8">

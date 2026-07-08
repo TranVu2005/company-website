@@ -1,12 +1,20 @@
 "use client";
 
-import { useState, Suspense } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Package } from "lucide-react";
+import { useCustomerAuth } from "@/components/CustomerAuthContext";
 
 function OrdersContent() {
   const router = useRouter();
+  const { customer, loading: authLoading } = useCustomerAuth();
   const [searchInput, setSearchInput] = useState("");
+
+  useEffect(() => {
+    if (!authLoading && !customer) {
+      router.push("/login?redirect=/orders");
+    }
+  }, [authLoading, customer, router]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,10 +23,14 @@ function OrdersContent() {
     }
   };
 
+  if (authLoading || !customer) {
+    return <div className="min-h-[70vh] flex items-center justify-center pt-28">Đang tải...</div>;
+  }
+
   return (
-    <div className="max-w-lg mx-auto px-4 py-24 text-center">
+    <div className="max-w-lg mx-auto px-4 pb-24 text-center page-content-offset">
       <Package className="w-16 h-16 text-gray-300 mx-auto mb-6" />
-      <h1 className="text-3xl font-bold mb-4">Theo dõi đơn hàng</h1>
+      <h1 className="page-title font-bold mb-4">Theo dõi đơn hàng</h1>
       <p className="text-gray-500 mb-8">Nhập mã đơn hàng để tra cứu trạng thái giao hàng.</p>
 
       <form onSubmit={handleSearch} className="flex gap-2">
