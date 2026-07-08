@@ -6,6 +6,7 @@ import "./globals.css";
 import "@/src/styles/index.css";
 
 import { SearchProvider } from "@/components/SearchContext";
+import { CustomerAuthProvider } from "@/components/CustomerAuthContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SearchOverlay from "@/components/SearchOverlay";
@@ -60,15 +61,17 @@ export default function RootLayout({
     <html lang="vi" className={`${inter.variable} ${outfit.variable}`}>
       <body suppressHydrationWarning>
         <OrganizationSchema />
-        <SearchProvider>
-          <div id="app">
-            <Navbar />
-            {children}
-            <Footer />
-          </div>
-          <SearchOverlay />
-          <ScrollAnimations />
-        </SearchProvider>
+        <CustomerAuthProvider>
+          <SearchProvider>
+            <div id="app">
+              <Navbar />
+              {children}
+              <Footer />
+            </div>
+            <SearchOverlay />
+            <ScrollAnimations />
+          </SearchProvider>
+        </CustomerAuthProvider>
         <Analytics />
       </body>
     </html>

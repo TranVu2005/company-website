@@ -1,3 +1,16 @@
+/* Khai báo thứ tự layer trước khi Tailwind import của nó thiết lập thứ tự
+   riêng. Đặt "legacy" (CSS thuần cho các trang marketing cũ) SAU "base"
+   nhưng TRƯỚC "utilities":
+   - legacy > base: các luật theo tên thẻ của legacy (h1, button...) vẫn
+     thắng preflight của Tailwind (base) — trang chủ/Hero/nút bấm cũ không
+     bị vỡ kiểu chữ/màu nền.
+   - utilities > legacy: mọi class Tailwind (p-4, text-3xl, bg-primary...)
+     vẫn thắng legacy khi có xung đột — sửa lỗi các trang thương mại
+     (giỏ hàng, thanh toán...) bị `* { margin/padding: 0 }`, `h1 { font-size
+     }`, `button { background: none }` trong reset.css/typography.css âm
+     thầm đè mất, vì trước đây CSS không layer luôn thắng CSS có layer bất
+     kể specificity. Xem src/styles/index.css. */
+@layer theme, base, legacy, components, utilities;
 @import "tailwindcss";
 
 @theme {
@@ -58,40 +71,66 @@
   to { opacity: 1; transform: scale(1); }
 }
 
-* {
-  box-sizing: border-box;
+/* Các luật nền/reset bên dưới trước đây không nằm trong layer nào (unlayered)
+   nên luôn thắng CSS có layer bất kể specificity — khiến `h1,h2...{color:...}`
+   (màu tối) đè lên `.hero-title{color:var(--text-light)}` (Hero trang chủ bị
+   chìm chữ) và `img{height:auto}` đè lên `.client-logo{height:40px}` (logo
+   đối tác phóng to hết cỡ). Đưa vào layer "legacy" để các class cụ thể hơn
+   (hero.css, clients.css...) đúng theo specificity vẫn thắng như thiết kế. */
+@layer legacy {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    color: hsl(220, 10%, 40%);
+    background: hsl(0, 0%, 100%);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: hsl(220, 20%, 15%);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ::selection {
+    background: hsla(8, 85%, 55%, 0.2);
+    color: hsl(220, 20%, 15%);
+  }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+/* Class dùng cho các trang nội dung (giỏ hàng, đặt hàng, theo dõi đơn...):
+   đặt trong layer "utilities" để luôn thắng preflight/legacy CSS. */
+@layer utilities {
+  .page-content-offset {
+    padding-top: 6rem;
+  }
 
-body {
-  font-family: var(--font-body);
-  color: hsl(220, 10%, 40%);
-  background: hsl(0, 0%, 100%);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
+  .page-title {
+    font-size: 1.875rem;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  color: hsl(220, 20%, 15%);
-  line-height: 1.2;
-  font-weight: 700;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-::selection {
-  background: hsla(8, 85%, 55%, 0.2);
-  color: hsl(220, 20%, 15%);
+  @media (min-width: 768px) {
+    .page-title {
+      font-size: 2.25rem;
+    }
+  }
 }

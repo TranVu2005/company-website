@@ -2,8 +2,11 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Search } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { Search, ShoppingCart, User } from "lucide-react";
 import { useSearch } from "./SearchContext";
+import { useCartStore } from "@/lib/cart-store";
+import { useCustomerAuth } from "./CustomerAuthContext";
 
 const NAV_ITEMS = [
   { id: "hero-root", label: "Trang chủ" },
@@ -17,11 +20,25 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
   const { open } = useSearch();
+  const pathname = usePathname();
+  // Chỉ trang chủ có Hero nền tối trải dài dưới navbar trong suốt — mọi
+  // trang khác nền trắng nên phải luôn hiện nền tối cho navbar để không
+  // bị "mất hút" (chữ trắng trên nền trắng).
+  const isHome = pathname === "/";
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [active, setActive] = useState("hero-root");
+  const [mounted, setMounted] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const indicatorRef = useRef<HTMLSpanElement>(null);
+  const totalItems = useCartStore((s) => s.totalItems());
+  const { customer, loading: authLoading } = useCustomerAuth();
+
+  // Chỉ đọc giỏ hàng (localStorage) sau khi đã mount ở client để tránh
+  // lệch nội dung giữa SSR và client (hydration mismatch).
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Di chuyển thanh indicator tới link đang active
   const moveIndicator = () => {
@@ -62,7 +79,7 @@ export default function Navbar() {
   }, [active]);
 
   return (
-    <header className={`navbar${scrolled ? " scrolled" : ""}`} id="navbar">
+    <header className={`navbar${scrolled || !isHome ? " scrolled" : ""}`} id="navbar">
       <div className="container nav-container">
         <Link href="/" className="logo">
           Nova<span>Tech</span>
@@ -91,6 +108,46 @@ export default function Navbar() {
           <button className="icon-btn" onClick={open} aria-label="Search">
             <Search width={18} height={18} />
           </button>
+          {mounted && !authLoading && (
+            <Link
+              href={customer ? "/account" : "/login"}
+              className="icon-btn"
+              aria-label={customer ? "Tài khoản" : "Đăng nhập"}
+            >
+              <User width={18} height={18} />
+            </Link>
+          )}
+          <Link
+            href="/cart"
+            className="icon-btn"
+            aria-label="Giỏ hàng"
+            style={{ position: "relative" }}
+          >
+            <ShoppingCart width={18} height={18} />
+            {mounted && totalItems > 0 && (
+              <span
+                style={{
+                  position: "absolute",
+                  top: -4,
+                  right: -4,
+                  background: "var(--accent-primary, #e63946)",
+                  color: "#fff",
+                  borderRadius: "9999px",
+                  fontSize: 10,
+                  fontWeight: 700,
+                  lineHeight: 1,
+                  minWidth: 16,
+                  height: 16,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  padding: "0 3px",
+                }}
+              >
+                {totalItems}
+              </span>
+            )}
+          </Link>
           <button
             className="mobile-menu-btn"
             onClick={() => setMobileOpen((v) => !v)}
