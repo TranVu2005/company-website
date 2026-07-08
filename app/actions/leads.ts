@@ -28,7 +28,7 @@ export async function submitLead(
   formData: FormData
 ): Promise<LeadFormState> {
   // Honeypot: bot thường điền field ẩn này → coi như thành công giả để không lộ.
-  if (str(formData, "website")) {
+  if (str(formData, "hp_confirm_field")) {
     return { status: "success", message: "Gửi thành công!" };
   }
 
@@ -64,10 +64,13 @@ export async function submitLead(
     "company",
     "message",
     "consent",
-    "website",
+    "hp_confirm_field",
   ]);
   const payload: Record<string, string> = {};
   for (const [key, value] of formData.entries()) {
+    // Bỏ qua field nội bộ React Server Actions ($ACTION_...) khi form được
+    // progressive-enhance qua useActionState — không phải dữ liệu người dùng.
+    if (key.startsWith("$")) continue;
     if (!reserved.has(key) && typeof value === "string" && value.trim()) {
       payload[key] = value.trim();
     }

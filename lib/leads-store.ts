@@ -1,17 +1,13 @@
 import "server-only";
-import { promises as fs } from "fs";
-import path from "path";
-import { randomUUID } from "crypto";
+import { getPayload } from "payload";
+import config from "@payload-config";
 
 /**
  * Lưu trữ lead (yêu cầu liên hệ/báo giá...).
  *
- * Giai đoạn 1: ghi ra file JSON cục bộ (.data/leads.json) — đủ để chạy local
- * và làm "seam" rõ ràng. Giai đoạn 1 (hoàn thiện)/Giai đoạn 3: thay thân hàm
- * saveLead/getLeads bằng Prisma/Payload mà KHÔNG đổi nơi gọi.
- *
- * Lưu ý: trên môi trường serverless (Vercel) filesystem chỉ đọc — cần chuyển
- * sang DB trước khi deploy production.
+ * Giai đoạn 1 (hoàn thiện): lưu vào collection "leads" của Payload CMS để
+ * hiển thị trong /admin, thay cho file JSON cục bộ trước đây. Chữ ký hàm
+ * saveLead/getLeads giữ nguyên nên nơi gọi (app/actions/leads.ts) không đổi.
  */
 
 export type LeadType = "contact" | "quote" | "partner" | "recruitment";
@@ -28,33 +24,65 @@ export interface Lead {
   createdAt: string;
 }
 
-const DATA_DIR = path.join(process.cwd(), ".data");
-const LEADS_FILE = path.join(DATA_DIR, "leads.json");
-
-async function readAll(): Promise<Lead[]> {
-  try {
-    const raw = await fs.readFile(LEADS_FILE, "utf-8");
-    return JSON.parse(raw) as Lead[];
-  } catch {
-    return [];
-  }
-}
+const TYPE_LABELS: Record<LeadType, string> = {
+  contact: "Liên hệ tư vấn",
+  quote: "Yêu cầu báo giá",
+  partner: "Đăng ký đối tác",
+  recruitment: "Ứng tuyển",
+};
 
 export async function saveLead(
   input: Omit<Lead, "id" | "createdAt">
 ): Promise<Lead> {
-  const lead: Lead = {
-    ...input,
-    id: randomUUID(),
-    createdAt: new Date().toISOString(),
+  const payloadClient = await getPayload({ config });
+
+  const extra = input.payload
+    ? "\n\n" + Object.entries(input.payload).map(([k, v]) => `${k}: ${v}`).join("\n")
+    : "";
+
+  const doc = await payloadClient.create({
+    collection: "leads",
+    data: {
+      name: input.name,
+      email: input.email,
+      phone: input.phone,
+      company: input.company || "",
+      subject: TYPE_LABELS[input.type],
+      message: (input.message || "") + extra,
+      status: "new",
+      source: "website-contact-form",
+    },
+  });
+
+  return {
+    id: String(doc.id),
+    type: input.type,
+    name: input.name,
+    email: input.email,
+    phone: input.phone,
+    company: input.company,
+    message: input.message,
+    payload: input.payload,
+    createdAt: doc.createdAt,
   };
-  const all = await readAll();
-  all.push(lead);
-  await fs.mkdir(DATA_DIR, { recursive: true });
-  await fs.writeFile(LEADS_FILE, JSON.stringify(all, null, 2), "utf-8");
-  return lead;
 }
 
 export async function getLeads(): Promise<Lead[]> {
-  return readAll();
+  const payloadClient = await getPayload({ config });
+  const result = await payloadClient.find({
+    collection: "leads",
+    limit: 100,
+    sort: "-createdAt",
+  });
+
+  return result.docs.map((doc) => ({
+    id: String(doc.id),
+    type: "contact",
+    name: doc.name,
+    email: doc.email,
+    phone: doc.phone,
+    company: doc.company || undefined,
+    message: doc.message || undefined,
+    createdAt: doc.createdAt,
+  }));
 }

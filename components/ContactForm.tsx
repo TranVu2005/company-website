@@ -35,12 +35,14 @@ export default function ContactForm() {
   return (
     <form id="contact-form" ref={formRef} action={formAction}>
       <input type="hidden" name="type" value="contact" />
-      {/* Honeypot chống spam — ẩn với người dùng, bot hay điền */}
+      {/* Honeypot chống spam — ẩn với người dùng, bot hay điền.
+          autoComplete="new-password" + tên field không phổ biến để trình
+          duyệt/trình quản lý mật khẩu không tự động điền nhầm vào đây. */}
       <input
         type="text"
-        name="website"
+        name="hp_confirm_field"
         tabIndex={-1}
-        autoComplete="off"
+        autoComplete="new-password"
         aria-hidden="true"
         style={{ position: "absolute", left: "-9999px", width: 1, height: 1 }}
       />
